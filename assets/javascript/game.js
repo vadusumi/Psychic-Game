@@ -52,10 +52,6 @@ console.log(randomPick);
 
 //Watches for a keystroke to trigger the use of a guess, letter checks and win/loss checks.
 //Translates input to lower-case for checks against 'randomPick' later.
-
-//For unknown reasons, line 58 works while the page is loaded from my computer, 
-//but the identical page on Github is not translating to lower-case.
-//I don't even know how to begin to explain that discrepancy.
 document.onkeyup = function(event){
 	var upperKey = event.key;
 	var key = upperKey.toLowerCase();
