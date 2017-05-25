@@ -51,8 +51,10 @@ console.log(randomPick);
 
 
 //Watches for a keystroke to trigger the use of a guess, letter checks and win/loss checks.
+//Translates input to lower-case for checks against 'randomPick' later.
 document.onkeyup = function(event){
-	var key = event.key;
+	var upperKey = event.key;
+	var key = upperKey.toLowerCase();
 
 
 //Checks for letters you've already picked and sends an alert.
