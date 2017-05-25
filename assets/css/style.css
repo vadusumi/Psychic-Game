@@ -1,0 +1,19 @@
+
+
+body {
+	background-image: url("../images/background.png");
+}
+
+
+.rowposition {
+	margin-top: 20%;
+}
+
+
+@media screen and (max-width: 1210px) {
+
+	.wrapper {
+		display: block;
+    	margin: 0 auto;
+	}
+}

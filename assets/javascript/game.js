@@ -1,6 +1,8 @@
 
 
 //Establishes score and guess variables.
+//Variable 'j' sets the current place in array 'alreadyPicked'.
+
 
 var wins = 0;
 var losses = 0;
@@ -11,6 +13,11 @@ var j = 0;
 
 
 //Presents and updates score and guess values.
+//The logic here was to package all update-related code into one function
+//that could then be called when needed. Turns out I only needed to call
+//it twice, and the update variables still manually needed to be updated on keypress,
+//so I didn't really save myself any work.
+
 
 var updateWins = "<p>Wins: " + wins + "</p>";
 var updateLosses = "<p>Losses: " + losses + "</p>";
@@ -43,24 +50,43 @@ console.log(randomPick);
 
 
 
-//Watches for a keystroke to trigger the use of a guess.
+//Watches for a keystroke to trigger the use of a guess, letter checks and win/loss checks.
 document.onkeyup = function(event){
 	var key = event.key;
 
 
+//Checks for letters you've already picked and sends an alert.
+//Prevents guesses from depleting on duplicate letters.
 		var letterChecker = alreadyPicked.indexOf(key);
 		if (letterChecker != -1){
 			alert("You already tried that letter! Pick something else!");
 			guesses++;
-			updateGuesses;
+			updateGuesses = "<p>Guesses: " + guesses + "</p>";
 		}
-	
 
+
+//Prevents guesses from depleting on non-alphabet keys.
+		var symbolChecker = alphabet.indexOf(key);
+			if (symbolChecker == -1){
+				alert("That's not a letter, doofus. Try again.");
+				guesses++;
+				updateGuesses = "<p>Guesses: " + guesses + "</p>";
+			}
+
+
+//Prevents cheating by repeatedly striking non-alphabet keys to trigger both letterChecker
+//and symbolChecker and thereby get two guesses for one keystroke.
+		if (symbolChecker == -1 && letterChecker != -1){
+			guesses--;
+			updateGuesses = "<p>Guesses: " + guesses + "</p>";
+		} 
+
+//Win condition.
 		if (key == randomPick){
 			wins++;
-			guesses = 9;
 
 			//Reset
+			guesses = 9;
 			alreadyPicked = [];
 			j = 0;
 			updateWins = "<p>Wins: " + wins + "</p>";
@@ -68,10 +94,11 @@ document.onkeyup = function(event){
 
 			}
 
+//Depletes guesses on incorrect letter choice.
 		else {
 			guesses--;
 
-			//Add to array of picked letters	
+			//Add to array of picked letters. Console logs for easier testing.	
 			console.log(key);	
 			alreadyPicked[j] = key;
 			j++;
@@ -81,11 +108,13 @@ document.onkeyup = function(event){
 
 		}
 
+//Loss condition.
 		if (guesses == 0){
 			losses++;
-			guesses = 9;
+			
 
 			//Reset
+			guesses = 9;
 			alreadyPicked = [];
 			j = 0;
 			updateLosses = "<p>Losses: " + losses + "</p>";
